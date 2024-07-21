@@ -23,7 +23,7 @@ userRoute.post("/signup", async (c) => {
       const result = await prisma.user.create({
         data: body.data,
       });
-      jwt_token = await sign({ email: body.data.email }, jwt_password);
+      jwt_token = await sign({ id: result.id }, jwt_password);
       console.log(jwt_token);
       console.log(result);
     } catch (err) {
@@ -47,20 +47,23 @@ userRoute.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = signinValidation.safeParse(await c.req.json());
-  if (body.success) {
-    const result = await prisma.user.findFirst({
-      where: {
-        email: body.data.email,
-        password: body.data.password,
-      },
-    });
-    if (!result) {
-      return c.json({
-        msg: "user Doesnot exist",
-      });
-    } 
+  if (!body.success) {
+    return c.json({
+      msg : "Invalid Inputs"
+    })
   }
-  const jwt_token = await sign({ email: body.data?.email }, jwt_password);
+  const result = await prisma.user.findFirst({
+    where: {
+      email: body.data.email,
+      password: body.data.password,
+    }
+  });
+  if(!result){
+    return c.json({
+      msg : "user Doesnot Exist"
+    })
+  }
+  const jwt_token = await sign({ id: result.id }, jwt_password);
   console.log(jwt_token);
   return c.json({
     token: jwt_token,
