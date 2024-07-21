@@ -1,41 +1,17 @@
-import { Hono } from "hono"
+import { Hono } from "hono";
+import { userRoute } from "../Routes/userRoutes";
+import { blogRoute } from "../Routes/blogRoute";
+
 const app = new Hono()
 
 
-app.post('/api/v1/signup', (c) => {
-  return c.json({
-    msg :"Sign Up Route"
-  })
-})
+// app.use(createMiddleware(async (c, next) => {
+//   // c.req = prisma;
+//   next()
+// }))
 
-
-app.post('/api/v1/signin', (c) => {
-  return c.json({
-    msg :"Sign In Route"
-  })
-})
-
-
-app.post('/api/v1/blog', (c) => {
-  return c.json({
-    msg :"Blog Route"
-  })
-})
-
-
-app.put('/api/v1/blog', (c) => {
-  return c.json({
-    msg :"Blog Route"
-  })
-})
-
-
-// app.get('/api/v1/:id', (c) => {
-//   return c.json({
-//     msg :"Get By id route"
-//   })
-// })
-
+app.route("/api/v1/user",userRoute);
+app.route("/api/v1/blog",blogRoute);
 
 
 export default app
