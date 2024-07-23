@@ -14,13 +14,10 @@ export default function SignupComp() {
     const signupFucntion = async ()=>{
       try {
         console.log(signupInputs)
-          const responce = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,{
-            name:signupInputs.name,
-            email:signupInputs.email,
-            password:signupInputs.password
-          })
+          const responce = await axios.post(`${BACKEND_URL}/api/v1/user/signup`,signupInputs)
+          const token = responce.data.token;
           console.log(responce.data.token);
-          localStorage.setItem("token",responce.data.token);
+          localStorage.setItem("token",token);
           navigate("/blog")
       } catch (error) {
         console.log("Error: ",error)

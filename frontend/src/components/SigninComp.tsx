@@ -13,13 +13,11 @@ export default function SigninComp() {
     const signinFucntion = async ()=>{
       try {
         console.log(signinInputs)
-          const responce = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,{
-            email:signinInputs.email,
-            password:signinInputs.password
-          })
+          const responce = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,signinInputs)
+          const token = responce.data.token;
           console.log(responce.data.token);
           console.log("Runned signin")
-          localStorage.setItem("token",responce.data.token);
+          localStorage.setItem("token",token);
           navigate("/blog")
       } catch (error) {
         console.log("Error: ",error)
