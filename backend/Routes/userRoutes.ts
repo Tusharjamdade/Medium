@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
-import { signinValidation, signupValidation } from "../zod/zodVerification";
-import { jwt_password } from "../zod/jwtPassword";
+import { jwt_password } from "../jwt_password/jwtPassword";
 import { sign } from "hono/jwt";
+import { signinValidation, signupValidation } from "@tusharjamdade/common";
 
 const userRoute = new Hono<{
   Bindings: {

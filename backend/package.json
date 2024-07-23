@@ -7,6 +7,7 @@
   "dependencies": {
     "@prisma/client": "^5.17.0",
     "@prisma/extension-accelerate": "^1.1.0",
+    "@tusharjamdade/common": "^1.0.0",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "express": "^4.19.2",

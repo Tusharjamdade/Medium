@@ -2,7 +2,8 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
-import { jwt_password } from "../zod/jwtPassword";
+import { jwt_password } from "../jwt_password/jwtPassword";
+import { postUpdateValidation, postValidation } from "@tusharjamdade/common";
 
 const blogRoute = new Hono<{
   Bindings: {
@@ -21,18 +22,25 @@ blogRoute.use("/*",async(c,next)=>{
 
     const header = c.req.header("Authorization") || "";
     console.log(header)
-    const verified  = await verify(header,jwt_password);
-    console.log(typeof verified.id)
+    try {
+        const verified  = await verify(header,jwt_password);
+    console.log(verified.id)
     if(verified){
-        // c.set("userId",verified.id)
+        // @ts-ignore
         c.set("userId",verified.id);
-        // c.set("userId",)
         await next()
     }else{
+        console.log("Error Occured")
         return c.json({
             msg : " Invalid Token"
         })
     }
+    } catch (error) {
+        return c.json({
+            msg : "Invalid Token"
+        })
+    }
+    
 
 
     next()
@@ -40,6 +48,12 @@ blogRoute.use("/*",async(c,next)=>{
 
 blogRoute.post("/", async (c) => {
   const body = await c.req.json();
+  const parseBody = postValidation.safeParse(body);
+  if(!parseBody.success){
+    return c.json({
+        msg : "Invalid Inputs"
+    })
+  }
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -58,6 +72,12 @@ blogRoute.post("/", async (c) => {
 
 blogRoute.put("/", async (c) => {
   const body = await c.req.json();
+  const parseBody = postUpdateValidation.safeParse(body)
+  if(!parseBody.success){
+    return c.json({
+        msg : "Invalid Inputs"
+    })
+  }
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
