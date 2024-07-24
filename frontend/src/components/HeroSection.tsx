@@ -8,14 +8,14 @@ export default function HeroSection() {
         <div className="text-center ">
             <h1
                 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-slate-200 sm:text-5xl md:text-6xl">
-                <span className="block xl:inline"><span className="mb-1 block">Task Bidder</span>
+                <span className="block xl:inline"><span className="mb-1 block">Blogs</span>
                 <span className="bg-gradient-to-r from-indigo-400 to-pink-600 bg-clip-text text-transparent">
-                    Post jobs and hire peoples!!
+                    Post and Read Blogs of Other Peoples!!
                 </span>
                 </span>
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-lg text-gray-500 dark:text-slate-400 sm:mt-5 md:mt-5">
-            TaskBidder is a freelancing website where freelancers can bid on tasks posted by clients looking for specific services. 
+            Create and share your thoughts with the world on our intuitive blog posting website.
             </p>
             <div className="mt-5 sm:mt-8 sm:flex sm:justify-center">
                 <div className="rounded-md shadow"><button onClick={()=>{navigate("signup")}}

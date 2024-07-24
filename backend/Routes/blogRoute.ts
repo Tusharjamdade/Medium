@@ -167,6 +167,14 @@ blogRoute.get("/:id", async (c) => {
       where: {
         id: parseInt(header),
       },
+      select:{
+        id:true,
+        title:true,
+        content:true,
+        publishDate:true,
+        authorId:true,
+        author:true
+      }
     });
     if(!result){
         return c.json({
@@ -174,7 +182,7 @@ blogRoute.get("/:id", async (c) => {
         })
     }
     return c.json({
-      result,
+      result
     });
   } catch (error) {
     return c.json({
