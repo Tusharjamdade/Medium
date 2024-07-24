@@ -27,6 +27,7 @@ model Post{
   content   String
   published Boolean  @default(false)
   authorId  Int
+  publishDate String @default("none")
   author User @relation(fields: [authorId],references: [id])
 }
 // DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiNzQxYjg4NjEtNTQ0Ny00ZjY3LTk3NWEtODY5MzNkZWYxNDc3IiwidGVuYW50X2lkIjoiYWI4MDZhMTkxNzNiZjA1ZDdlNGU1YmI5YzJmZGFjOWMxN2RjNjcxZmM5ZjQ3ZGZlZTg3ZjhmNTk4MjAxNTQwZiIsImludGVybmFsX3NlY3JldCI6ImZlNWRlZTA4LWMwNzctNGQ4Zi05OWU4LTYzMmQ3MjQxY2NmYyJ9.1VzpbQTsL2gcnMBhb5HXPExxGiMCGrVa4zNKHJCAOiI"

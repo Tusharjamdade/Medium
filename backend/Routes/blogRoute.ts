@@ -18,8 +18,6 @@ blogRoute.use("/*",async(c,next)=>{
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
-
     const header = c.req.header("Authorization") || "";
     console.log(header)
     try {
@@ -57,11 +55,17 @@ blogRoute.post("/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
+  let today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  const yyyy = today.getFullYear();
 
+  const currentDate = dd + '/' + mm + '/' + yyyy;
   const result = await prisma.post.create({
     data: {
       title: body.title,
       content: body.content,
+      publishDate: currentDate,
       authorId: c.get("userId"),
     },
   });
@@ -104,6 +108,14 @@ blogRoute.get("/bulk", async (c) => {
   try {
     const result = await prisma.post.findMany({
       where: {},
+      select:{
+        id:true,
+        authorId : true,
+        title : true,
+        content : true,
+        publishDate : true,
+        author:true
+      }
     });
     return c.json({
       result,
@@ -114,6 +126,36 @@ blogRoute.get("/bulk", async (c) => {
     });
   }
 });
+
+blogRoute.get("/user", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const userid = c.get("userId")
+  console.log("This is userid",c.get("userId"))
+try {
+  const user = await prisma.user.findFirst({
+    where:{
+      id:c.get("userId")
+    },
+    select:{
+      name:true
+    }
+  })
+  if(user){
+    return c.json({
+      user
+    })
+  }
+} catch (error) {
+  return c.json({
+    msg:"User Does Not Exist"
+  })
+}
+return c.json({
+  msg  : "All Good"
+})
+})
 
 blogRoute.get("/:id", async (c) => {
   const header = c.req.param("id");
@@ -140,5 +182,7 @@ blogRoute.get("/:id", async (c) => {
     });
   }
 });
+
+
 
 export { blogRoute };

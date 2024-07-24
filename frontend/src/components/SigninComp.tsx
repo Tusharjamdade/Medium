@@ -18,7 +18,9 @@ export default function SigninComp() {
           console.log(responce.data.token);
           console.log("Runned signin")
           localStorage.setItem("token",token);
-          navigate("/blog")
+          if(token){
+            navigate("/blogs")
+          }
       } catch (error) {
         console.log("Error: ",error)
       }

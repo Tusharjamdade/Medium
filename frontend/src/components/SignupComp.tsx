@@ -18,7 +18,10 @@ export default function SignupComp() {
           const token = responce.data.token;
           console.log(responce.data.token);
           localStorage.setItem("token",token);
-          navigate("/blog")
+          if(token){
+            navigate("/blogs")
+          }
+         
       } catch (error) {
         console.log("Error: ",error)
       }
